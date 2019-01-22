@@ -1,12 +1,23 @@
-/*
-Post:
-- title - string
-- price - string
-- images - array of strings
-- location - string
-- lat - number
-- lng - number
-- description - string
-- author - object id ref User
-- reviews - array of objects ref Review
-*/
+const mongoose = require('mongoose');
+
+const postSchema = new mongoose.Schema({
+    title: String,
+    price: String,
+    description: String,
+    images: [ String ],
+    location: String,
+    lat: Number,
+    lng: Number,
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    reviews: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Review'
+        }
+    ]
+});
+
+module.exports = mongoose.model('Post', postSchema);
