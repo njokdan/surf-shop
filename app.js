@@ -19,12 +19,12 @@ const app = express();
 
 // MongoDB connect and check
 mongoose.set('useCreateIndex', true)
-mongoose.connect('mongodb://localhost:27017/surf-shop', {useNewUrlParser: true});
+mongoose.connect('mongodb://localhost:27017/surf-shop', { useNewUrlParser: true });
 
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-  console.log('we\'re connected!');
+db.once('open', function () {
+    console.log('we\'re connected!');
 });
 
 
@@ -46,10 +46,10 @@ app.use(session({
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: true
-}))
+}));
+app.use(passport.initialize());
 
 passport.use(User.createStrategy());
-
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
