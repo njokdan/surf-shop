@@ -13,6 +13,7 @@ module.exports = {
         await User.register(newUser, req.body.password);
         res.redirect('/');
     },
+
     // Login al usuario
     postLogin(req, res, next) {
         passport.authenticate('local', {
@@ -20,10 +21,10 @@ module.exports = {
             failureRedirect: '/login'
         })(req, res, next);
     },
+
     // Logout al usuario
     async getLogout(req, res, next) {
         await req.logout();
         res.redirect('/');
     }
-    
 }
