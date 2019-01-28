@@ -2,6 +2,11 @@
 <div>Price: $<%= post.price %></div>
 <div>Description: <%= post.description %></div>
 <div><em>Location: <%= post.location %></em></div>
+<div>
+    <% post.images.forEach(image => { %>
+        <img src="<%= image.url %>" alt="Post Image" width="200px">
+    <% }); %>
+</div>
 
 <br>
 
