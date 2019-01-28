@@ -2,7 +2,8 @@
 
 <% posts.forEach(post => { %>
     <h2><%=  post.title %></h2>
-    <p>Price: $<%= post.price %></p>
-    <p>Description: <%= post.description %></p>
-    <em>Location: <%= post.location %></em>
+    <div>Price: $<%= post.price %></div>
+    <div>Description: <%= post.description %></div>
+    <div><em>Location: <%= post.location %></em></div>
+    <div><a href="/posts/<%= post._id %>">View More</a></div>
 <% }); %>
