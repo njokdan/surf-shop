@@ -2,4 +2,14 @@
 <div>Price: $<%= post.price %></div>
 <div>Description: <%= post.description %></div>
 <div><em>Location: <%= post.location %></em></div>
-<div><a href="/posts/<%= post._id %>/edit">Edit Post</a></div>
+
+<br>
+
+<div style="display: flex">
+    <div><a href="/posts/<%= post._id %>/edit"><button>Edit</button></a></div>
+    <div>
+        <form action="/posts/<%= post._id %>?_method=DELETE" method="post">
+            <input type="submit" value="Delete">
+        </form>
+    </div>
+</div>

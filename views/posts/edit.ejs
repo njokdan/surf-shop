@@ -2,17 +2,19 @@
 
 <form action="/posts/<%= post._id %>?_method=PUT" method="POST">
     <div>
-        <input type="text" name="title" value="<%= post.title %>">
+        <input type="text" name="post[title]" value="<%= post.title %>">
     </div>
     <div>
-        <input type="text" name="price" value="<%= post.price %>">
+        <input type="text" name="post[price]" value="<%= post.price %>">
     </div>
     <div>
-        <textarea name="description"><%= post.description %></textarea>
+        <textarea name="post[description]"><%= post.description %></textarea>
     </div>
     <div>
-        <input type="text" name="location" value="<%= post.location %>">
+        <input type="text" name="post[location]" value="<%= post.location %>">
     </div>
-
-    <input type="submit" value="Edit">
+    <br>
+    <div>
+        <input type="submit" value="Update">
+    </div>
 </form>
