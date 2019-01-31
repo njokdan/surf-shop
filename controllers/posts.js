@@ -1,10 +1,14 @@
 const Post = require('../models/post');
+// Get cloudinary setup
 const cloudinary = require('cloudinary');
 cloudinary.config({
 	cloud_name: 'dxvpgpgoq',
 	api_key: '536837126332476',
 	api_secret: process.env.CLOUDINARY_SECRET
 });
+// Get JavaScript SDK for Mapbox
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const geocodingClient = mbxGeocoding({ accessToken: process.env.MAPBOX_TOKEN });
 
 module.exports = {
 	// Posts Index
@@ -21,6 +25,7 @@ module.exports = {
 	// Posts Create
 	async postCreate(req, res, next) {
 		req.body.post.images = [];
+		// Add images in cloudinary and req.boy.post
 		for(const file of req.files) {
 			let image = await cloudinary.v2.uploader.upload(file.path);
 			req.body.post.images.push({
@@ -28,7 +33,17 @@ module.exports = {
 				public_id: image.public_id
 			});
 		}
+		// Get geo coordinates and save it to the database
+		let response = await geocodingClient.forwardGeocode({
+            query: req.body.post.location,
+            limit: 1
+		}).send()
+		
+		// Create post
 		let post = await Post.create(req.body.post);
+		req.body.post.coordinates = response.body.features[0].geometry.coordinates;
+
+		// Redirect to show page
 		res.redirect(`/posts/${post.id}`);
 	},
 

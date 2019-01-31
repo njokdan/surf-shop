@@ -1,15 +1,59 @@
-<h1><%=  post.title %></h1>
-<div>Price: $<%= post.price %></div>
-<div>Description: <%= post.description %></div>
-<div><em>Location: <%= post.location %></em></div>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.css' rel='stylesheet' />
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    #map {
+        width: 400px;
+        height: 300px;
+    }
+
+    .marker {
+        background-image: url('/images/mapbox-icon.png');
+        background-size: cover;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    .mapboxgl-popup {
+        max-width: 200px;
+    }
+
+    .mapboxgl-popup-content {
+        text-align: center;
+        font-family: 'Open Sans', sans-serif;
+    }
+</style>
+
+<!-- Post properties -->
+<h1>
+    <%=  post.title %>
+</h1>
+<div>Price: $
+    <%= post.price %>
+</div>
+<div>Description:
+    <%= post.description %>
+</div>
+<div><em>Location:
+        <%= post.location %></em></div>
 <div>
     <% post.images.forEach(image => { %>
-        <img src="<%= image.url %>" alt="Post Image" width="200px">
+    <img src="<%= image.url %>" alt="Post Image" width="200px">
     <% }); %>
 </div>
 
-<br>
+<!-- Map -->
+<div id='map'></div>
 
+<!-- Edit and Delete buttons -->
 <div style="display: flex">
     <div><a href="/posts/<%= post._id %>/edit"><button>Edit</button></a></div>
     <div>
@@ -18,3 +62,49 @@
         </form>
     </div>
 </div>
+
+<script>
+
+    mapboxgl.accessToken = 'pk.eyJ1IjoiY29iaW1yIiwiYSI6ImNqcmwydWRnMjA0ODM0M3BuYXc5dWo0aHEifQ.WdeKlwkAjS4WWMMK9aT_Mg';
+
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/light-v10',
+        center: [-96, 37.8],
+        zoom: 3
+    });
+
+    // code from the next step will go here!
+    var geojson = {
+        type: 'FeatureCollection',
+        features: [
+            {
+                type: 'Feature',
+                geometry: {
+                    type: 'Point',
+                    coordinates: [-122.414, 37.776]
+                },
+                properties: {
+                    title: 'Mapbox',
+                    description: 'San Francisco, California'
+                }
+            }
+        ]
+    };
+
+    // add markers to map
+    geojson.features.forEach(function(marker) {
+
+    // create a HTML element for each feature
+    var el = document.createElement('div');
+    el.className = 'marker';
+
+    // make a marker for each feature and add to the map
+    new mapboxgl.Marker(el)
+        .setLngLat(marker.geometry.coordinates)
+        .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+        .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>'))
+        .addTo(map);
+    });
+
+</script>
