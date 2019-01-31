@@ -10,7 +10,7 @@ module.exports = {
 	// Posts Index
 	async postIndex(req, res, next) {
 		let posts = await Post.find({});
-		res.render('posts/index', { posts });
+		res.render('posts/index', { posts: posts });
 	},
 
 	// Posts New
@@ -35,13 +35,13 @@ module.exports = {
 	// Posts Show
 	async postShow(req, res, next) {
 		let post = await Post.findById(req.params.id);
-		res.render('posts/show', { post });
+		res.render('posts/show', { post: post });
 	},
 
 	// Posts Edit
 	async postEdit(req, res, next) {
 		let post = await Post.findById(req.params.id);
-		res.render('posts/edit', { post });
+		res.render('posts/edit', { post: post });
 	},
 
 	// Posts Update

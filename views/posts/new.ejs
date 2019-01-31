@@ -1,0 +1,31 @@
+<h1>New Post!</h1>
+
+<form id="postNewForm" action="/posts" method="POST" enctype="multipart/form-data">
+	<div><input type="text" name="post[title]" placeholder="Title"></div>
+	<div><input type="text" name="post[price]" placeholder="Price"></div>
+	<div>
+		<input id="imageUpload" type="file" accept="images/*" name="images" multiple />
+	</div>
+	<div><textarea name="post[description]" placeholder="Description"></textarea></div>
+	<div><input type="text" name="post[location]" placeholder="Location"></div>
+
+	<input type="submit">
+</form>
+
+<!-- Form Validation -->
+<script>
+    // Find post edit form
+    let postNewForm = document.getElementById('postNewForm');
+    // Add submit event listener to post edit form
+    postNewForm.addEventListener('submit', (event) => {
+        // find length of uploaded images
+        let imageUploads = document.getElementById('imageUpload').files.length;
+
+        // figure out if the form can be submitted or not
+        if (imageUploads > 4) {
+			event.preventDefault();
+            alert(`You can only upload 4 images per product!`);
+		}
+    });
+    
+</script>
