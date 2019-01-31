@@ -1,8 +1,8 @@
 const Post = require('../models/post');
 const cloudinary = require('cloudinary');
 cloudinary.config({
-	cloud_name: 'devsprout',
-	api_key: '744168392144115',
+	cloud_name: 'dxvpgpgoq',
+	api_key: '536837126332476',
 	api_secret: process.env.CLOUDINARY_SECRET
 });
 
@@ -12,10 +12,12 @@ module.exports = {
 		let posts = await Post.find({});
 		res.render('posts/index', { posts });
 	},
+
 	// Posts New
 	postNew(req, res, next) {
 		res.render('posts/new');
 	},
+
 	// Posts Create
 	async postCreate(req, res, next) {
 		req.body.post.images = [];
@@ -29,24 +31,29 @@ module.exports = {
 		let post = await Post.create(req.body.post);
 		res.redirect(`/posts/${post.id}`);
 	},
+
 	// Posts Show
 	async postShow(req, res, next) {
 		let post = await Post.findById(req.params.id);
 		res.render('posts/show', { post });
 	},
+
 	// Posts Edit
 	async postEdit(req, res, next) {
 		let post = await Post.findById(req.params.id);
 		res.render('posts/edit', { post });
 	},
+
 	// Posts Update
 	async postUpdate(req, res, next) {
 		// find the post by id
 		let post = await Post.findById(req.params.id);
+
 		// check if there's any images for deletion
-		if(req.body.deleteImages && req.body.deleteImages.length) {			
+		if(req.body.deleteImages && req.body.deleteImages.length) {		
 			// assign deleteImages from req.body to its own variable
 			let deleteImages = req.body.deleteImages;
+
 			// loop over deleteImages
 			for(const public_id of deleteImages) {
 				// delete images from cloudinary
@@ -78,10 +85,11 @@ module.exports = {
 		post.price = req.body.post.price;
 		post.location = req.body.post.location;
 		// save the updated post into the db
-		post.save();
+		await post.save();
 		// redirect to show page
 		res.redirect(`/posts/${post.id}`);
 	},
+
 	// Posts Destroy
 	async postDestroy(req, res, next) {
 		let post = await Post.findById(req.params.id);
