@@ -40,8 +40,8 @@ module.exports = {
 		}).send()
 		
 		// Create post
-		let post = await Post.create(req.body.post);
 		req.body.post.coordinates = response.body.features[0].geometry.coordinates;
+		let post = await Post.create(req.body.post);
 
 		// Redirect to show page
 		res.redirect(`/posts/${post.id}`);
