@@ -26,7 +26,7 @@ module.exports = {
 	async postCreate(req, res, next) {
 		req.body.post.images = [];
 		// Add images in cloudinary and req.boy.post
-		for(const file of req.files) {
+		for (const file of req.files) {
 			let image = await cloudinary.v2.uploader.upload(file.path);
 			req.body.post.images.push({
 				url: image.secure_url,
@@ -35,12 +35,12 @@ module.exports = {
 		}
 		// Get geo coordinates and save it to the database
 		let response = await geocodingClient.forwardGeocode({
-            query: req.body.post.location,
-            limit: 1
+			query: req.body.post.location,
+			limit: 1
 		}).send()
-		
-		// Create post
 		req.body.post.coordinates = response.body.features[0].geometry.coordinates;
+
+		// Create post
 		let post = await Post.create(req.body.post);
 
 		// Redirect to show page
@@ -65,17 +65,17 @@ module.exports = {
 		let post = await Post.findById(req.params.id);
 
 		// check if there's any images for deletion
-		if(req.body.deleteImages && req.body.deleteImages.length) {		
+		if (req.body.deleteImages && req.body.deleteImages.length) {
 			// assign deleteImages from req.body to its own variable
 			let deleteImages = req.body.deleteImages;
 
 			// loop over deleteImages
-			for(const public_id of deleteImages) {
+			for (const public_id of deleteImages) {
 				// delete images from cloudinary
 				await cloudinary.v2.uploader.destroy(public_id);
 				// delete image from post.images
-				for(const image of post.images) {
-					if(image.public_id === public_id) {
+				for (const image of post.images) {
+					if (image.public_id === public_id) {
 						let index = post.images.indexOf(image);
 						post.images.splice(index, 1);
 					}
@@ -83,9 +83,9 @@ module.exports = {
 			}
 		}
 		// check if there are any new images for upload
-		if(req.files) {
+		if (req.files) {
 			// upload images
-			for(const file of req.files) {
+			for (const file of req.files) {
 				let image = await cloudinary.v2.uploader.upload(file.path);
 				// add images to post.images array
 				post.images.push({
@@ -94,21 +94,31 @@ module.exports = {
 				});
 			}
 		}
+		// check if is the locaction is different to get new coordinates update both
+		if (post.location !== req.body.post.location) {
+			// Get geo coordinates and save it to the database
+			let response = await geocodingClient.forwardGeocode({
+				query: req.body.post.location,
+				limit: 1
+			}).send()
+			post.coordinates = response.body.features[0].geometry.coordinates;
+			post.location = req.body.post.location;
+		}
+
 		// update the post with any new properties
 		post.title = req.body.post.title;
 		post.description = req.body.post.description;
 		post.price = req.body.post.price;
-		post.location = req.body.post.location;
 		// save the updated post into the db
 		await post.save();
 		// redirect to show page
-		res.redirect(`/posts/${post.id}`);
+		res.redirect(`/posts/${post._id}`);
 	},
 
 	// Posts Destroy
 	async postDestroy(req, res, next) {
 		let post = await Post.findById(req.params.id);
-		for(const image of post.images) {
+		for (const image of post.images) {
 			await cloudinary.v2.uploader.destroy(image.public_id);
 		}
 		await post.remove();
