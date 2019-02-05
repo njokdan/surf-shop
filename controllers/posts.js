@@ -14,12 +14,12 @@ module.exports = {
 	// Posts Index
 	async postIndex(req, res, next) {
 		let posts = await Post.find({});
-		res.render('posts/index', { posts: posts });
+		res.render('posts/index', { posts: posts, title: `Surf Shop - All Posts` });
 	},
 
 	// Posts New
 	postNew(req, res, next) {
-		res.render('posts/new');
+		res.render('posts/new', {title: `Surf Shop - New Post` });
 	},
 
 	// Posts Create
@@ -50,13 +50,13 @@ module.exports = {
 	// Posts Show
 	async postShow(req, res, next) {
 		let post = await Post.findById(req.params.id);
-		res.render('posts/show', { post: post });
+		res.render('posts/show', { post: post, title: `Surf Shop - ${post.title}`  });
 	},
 
 	// Posts Edit
 	async postEdit(req, res, next) {
 		let post = await Post.findById(req.params.id);
-		res.render('posts/edit', { post: post });
+		res.render('posts/edit', { post: post, title: `Surf Shop - Edit ${post.title}` });
 	},
 
 	// Posts Update

@@ -1,3 +1,5 @@
+<% layout('layouts/boilerplate') -%>
+
 <h1>New Post!</h1>
 
 <form id="postNewForm" action="/posts" method="POST" enctype="multipart/form-data">
@@ -13,19 +15,4 @@
 </form>
 
 <!-- Form Validation -->
-<script>
-    // Find post edit form
-    let postNewForm = document.getElementById('postNewForm');
-    // Add submit event listener to post edit form
-    postNewForm.addEventListener('submit', (event) => {
-        // find length of uploaded images
-        let imageUploads = document.getElementById('imageUpload').files.length;
-
-        // figure out if the form can be submitted or not
-        if (imageUploads > 4) {
-			event.preventDefault();
-            alert(`You can only upload 4 images per product!`);
-		}
-    });
-    
-</script>
+<script src="/javascripts/post-new.js"></script>

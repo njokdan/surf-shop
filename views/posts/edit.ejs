@@ -1,3 +1,5 @@
+<% layout('layouts/boilerplate') -%>
+
 <h1>Editar Post</h1>
 
 <form action="/posts/<%= post._id %>?_method=PUT" method="POST" id="postEditForm" enctype="multipart/form-data">
@@ -23,30 +25,5 @@
     <div><input type="submit" value="Update"></div>
 </form>
 
-<script>
-    // Find post edit form
-    let postEditForm = document.getElementById('postEditForm');
-    // Add submit event listener to post edit form
-    postEditForm.addEventListener('submit', (event) => {
-        // find length of uploaded images
-        let imageUploads = document.getElementById('imageUpload').files.length;
-        // find total number of existing images
-        let existingImages = document.querySelectorAll('.imageDeleteCheckbox').length;
-        // find total number of potential image deletions
-        let imageDeletions =  document.querySelectorAll('.imageDeleteCheckbox:checked').length;
-
-        // figure out if the form can be submitted or not
-        if (imageUploads <= 4) {
-            let newTotalImages = existingImages - imageDeletions + imageUploads;
-            if (newTotalImages > 4) {
-                event.preventDefault();
-                let newTotalAvg = newTotalImages - 4;
-                alert(`You need to remove at least ${newTotalAvg} more image${newTotalAvg == 1 ? '' : 's'}!`);
-            }
-        } else {
-            event.preventDefault();
-            alert(`You can only upload 4 images per product!`);
-        }
-    });
-    
-</script>
+<!-- Form Validation File -->
+<script src="/javascripts/post-edit.js"></script>
