@@ -14,7 +14,7 @@ module.exports = {
 	// Posts Index
 	async postIndex(req, res, next) {
 		let posts = await Post.find({});
-		res.render('posts/index', { posts: posts, title: `Surf Shop - All Posts` });
+		res.render('posts/index', { posts, title: `Surf Shop - All Posts` });
 	},
 
 	// Posts New
@@ -43,20 +43,21 @@ module.exports = {
 		// Create post
 		let post = await Post.create(req.body.post);
 
-		// Redirect to show page
+		// Set flash message and redirect to show page
+		req.session.success = 'Post created successfully!';
 		res.redirect(`/posts/${post.id}`);
 	},
 
 	// Posts Show
 	async postShow(req, res, next) {
 		let post = await Post.findById(req.params.id);
-		res.render('posts/show', { post: post, title: `Surf Shop - ${post.title}`  });
+		res.render('posts/show', { post, title: `Surf Shop - ${post.title}`  });
 	},
 
 	// Posts Edit
 	async postEdit(req, res, next) {
 		let post = await Post.findById(req.params.id);
-		res.render('posts/edit', { post: post, title: `Surf Shop - Edit ${post.title}` });
+		res.render('posts/edit', { post, title: `Surf Shop - Edit ${post.title}` });
 	},
 
 	// Posts Update
@@ -111,7 +112,9 @@ module.exports = {
 		post.price = req.body.post.price;
 		// save the updated post into the db
 		await post.save();
-		// redirect to show page
+
+		// Set flash message and redirect to show page
+		req.session.success = 'Post edited successfully!';
 		res.redirect(`/posts/${post._id}`);
 	},
 
@@ -122,6 +125,9 @@ module.exports = {
 			await cloudinary.v2.uploader.destroy(image.public_id);
 		}
 		await post.remove();
+
+		// Set flash message and redirect to posts page
+		req.session.success = 'Post deleted successfully!';
 		res.redirect('/posts');
 	}
 }
