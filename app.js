@@ -70,6 +70,7 @@ app.use((req, res, next) => {
     res.locals.error = req.session.error || '';
     delete req.session.error;
     // continue on to next function in middleware chain
+    next();
 });
 
 

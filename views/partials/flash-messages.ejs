@@ -1,3 +1,9 @@
-<% if(success && success.lenght) { %>
+<!-- Sucess Message -->
+<% if(success && success.length) { %>
     <h3 style="color: green"><%= success %></h3>
+<% } %>
+
+<!-- Error Message -->
+<% if(error && error.length) { %>
+    <h3 style="color: red"><%= error %></h3>
 <% } %>

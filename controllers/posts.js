@@ -114,7 +114,7 @@ module.exports = {
 		await post.save();
 
 		// Set flash message and redirect to show page
-		req.session.success = 'Post edited successfully!';
+		req.session.success = 'Post updated successfully!';
 		res.redirect(`/posts/${post._id}`);
 	},
 
