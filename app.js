@@ -24,7 +24,7 @@ const app = express();
 
 // MongoDB connect and check
 mongoose.set('useCreateIndex', true)
-mongoose.connect('mongodb://localhost:27017/surf-shop-mapbox', { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost:27017/surf-shop', { useNewUrlParser: true });
 
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
