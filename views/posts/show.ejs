@@ -24,7 +24,24 @@
     </div>
 </div>
 
-<!-- Mapbox Scripts - Map Loader -->
+<!-- Create reviews -->
+<h2>Create a Review</h2>
+<form action="/posts/<%= post._id %>/reviews" method="POST">
+    <textarea name="review[body]" required cols="30"></textarea>
+    <input type="number" min="1" required max="5" step="1" name="review[rating]">
+    
+    <input type="submit" value="Create Review">
+</form>
+<!-- Show reviews (if exists) -->
+<h3>Reviews</h3>
+<% post.reviews.forEach(review => { %>
+    <div>
+        <%= review.body %>
+        - Rating: <%= review.rating %>
+    </div>
+<% }); %>
+
+<!-- Scripts - Mapbox Map Loader -->
 <script>
     let post = <%- JSON.stringify(post) %>;
 </script>
