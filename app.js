@@ -61,14 +61,24 @@ passport.deserializeUser(User.deserializeUser());
 
 // Set local variables middleware
 app.use((req, res, next) => {
+    // set user
+    req.user = {
+        '_id': '5c7fdccbdf427d30647e2404',
+        'username': 'cobimr'
+    };
+    res.locals.currentUser = req.user;
+
     // set default page title
     res.locals.title = 'Surf Shop';
+
     // set success flash message
     res.locals.success = req.session.success || '';
     delete req.session.success;
+
     // set error flash message
     res.locals.error = req.session.error || '';
     delete req.session.error;
+
     // continue on to next function in middleware chain
     next();
 });
