@@ -52,17 +52,3 @@
     </div>
     <hr>
 <% }); %>
-
-<!-- Scripts - Toggle Edit Rewview Form -->
-<script>
-    $('.toggle-edit-form').on('click', function() {
-        $(this).text() === 'Edit' ? $(this).text('Cancel') : $(this).text('Edit');
-        $(this).siblings('.edit-review-form').toggle();
-    });
-</script>
-
-<!-- Scripts - Mapbox Map Loader -->
-<script>
-    let post = <%- JSON.stringify(post) %>;
-</script>
-<script src="/javascripts/post-show.js"></script>
