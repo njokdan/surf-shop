@@ -40,8 +40,26 @@
         <%= review.body %><br>
         Rating: <%= review.rating %>
     </div>
+    <div>
+        <button class="toggle-edit-form">Edit</button>
+        <!-- Edit review -->
+        <form action="/posts/<%= post._id %>/reviews/<%= review._id %>?_method=PUT" method="POST" class="edit-review-form">
+            <textarea name="review[body]" required cols="30"><%= review.body %></textarea>
+            <input type="number" min="1" required max="5" step="1" name="review[rating]" value="<%= review.rating %>">
+
+            <input type="submit" value="Update">
+        </form>
+    </div>
     <hr>
 <% }); %>
+
+<!-- Scripts - Toggle Edit Rewview Form -->
+<script>
+    $('.toggle-edit-form').on('click', function() {
+        $(this).text() === 'Edit' ? $(this).text('Cancel') : $(this).text('Edit');
+        $(this).siblings('.edit-review-form').toggle();
+    });
+</script>
 
 <!-- Scripts - Mapbox Map Loader -->
 <script>
