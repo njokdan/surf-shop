@@ -35,22 +35,26 @@
 <!-- Show reviews (if exists) -->
 <h3>Reviews</h3>
 <% post.reviews.forEach(review => { %>
-  <div>
-    Author: <%= review.author.username %><br>
-    <%= review.body %><br>
-    Rating: <%= review.rating %>
-  </div>
-  <% if(review.author.equals(currentUser._id)) { %>
-    <div>
-      <button class="toggle-edit-form">Edit</button>
-      <!-- Edit review -->
-      <form action="/posts/<%= post._id %>/reviews/<%= review._id %>?_method=PUT" method="POST" class="edit-review-form">
-        <textarea name="review[body]" required cols="30"><%= review.body %></textarea>
-        <input type="number" min="1" required max="5" step="1" name="review[rating]" value="<%= review.rating %>">
+<div>
+  Author: <%= review.author.username %><br>
+  <%= review.body %><br>
+  Rating: <%= review.rating %>
+</div>
+<% if(review.author.equals(currentUser._id)) { %>
+<div>
+  <button class="toggle-edit-form">Edit</button>
+  <!-- Edit review -->
+  <form action="/posts/<%= post._id %>/reviews/<%= review._id %>?_method=PUT" method="POST" class="edit-review-form">
+    <textarea name="review[body]" required cols="30"><%= review.body %></textarea>
+    <input type="number" min="1" required max="5" step="1" name="review[rating]" value="<%= review.rating %>">
 
-        <input type="submit" value="Update">
-      </form>
-    </div>
-  <% } %>
-  <hr>
+    <input type="submit" value="Update">
+  </form>
+</div>
+<!-- Delete review -->
+<form action="/posts/<%= post._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+  <input type="submit" value="Delete">
+</form>
+<% } %>
+<hr>
 <% }); %>
