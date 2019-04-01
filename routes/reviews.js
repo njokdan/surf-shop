@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router({mergeParams: true}); // Allow to get the url :placeholder from the route confg in app.js
-const { asyncErrorHandler } = require('../middlewares/index');
+const { asyncErrorHandler, isReviewAuthor } = require('../middlewares/index');
 const {
     reviewCreate,
     reviewUpdate,
@@ -11,7 +11,7 @@ const {
 router.post('/', asyncErrorHandler(reviewCreate));
 
 /* PUT update post - /posts/:id/reviews/:review_id */
-router.put('/:review_id', asyncErrorHandler(reviewUpdate));
+router.put('/:review_id', isReviewAuthor, asyncErrorHandler(reviewUpdate));
 
 /* DELETE destroy post - /posts/:id/reviews/:review_id */
 router.delete('/:review_id', asyncErrorHandler(reviewDestroy));

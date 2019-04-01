@@ -6,9 +6,9 @@
 <div>Description: <%= post.description %></div>
 <div><em>Location: <%= post.location %></em></div>
 <div>
-    <% post.images.forEach(image => { %>
-        <img src="<%= image.url %>" alt="Post Image" width="200px">
-    <% }); %>
+  <% post.images.forEach(image => { %>
+  <img src="<%= image.url %>" alt="Post Image" width="200px">
+  <% }); %>
 </div>
 
 <!-- Map -->
@@ -16,39 +16,41 @@
 
 <!-- Edit and Delete buttons -->
 <div style="display: flex">
-    <div><a href="/posts/<%= post._id %>/edit"><button>Edit</button></a></div>
-    <div>
-        <form action="/posts/<%= post._id %>?_method=DELETE" method="post">
-            <input type="submit" value="Delete">
-        </form>
-    </div>
+  <div><a href="/posts/<%= post._id %>/edit"><button>Edit</button></a></div>
+  <div>
+    <form action="/posts/<%= post._id %>?_method=DELETE" method="post">
+      <input type="submit" value="Delete">
+    </form>
+  </div>
 </div>
 
 <!-- Create reviews -->
 <h2>Create a Review</h2>
 <form action="/posts/<%= post._id %>/reviews" method="POST">
-    <textarea name="review[body]" required cols="30"></textarea>
-    <input type="number" min="1" required max="5" step="1" name="review[rating]">
-    
-    <input type="submit" value="Create Review">
+  <textarea name="review[body]" required cols="30"></textarea>
+  <input type="number" min="1" required max="5" step="1" name="review[rating]">
+
+  <input type="submit" value="Create Review">
 </form>
 <!-- Show reviews (if exists) -->
 <h3>Reviews</h3>
 <% post.reviews.forEach(review => { %>
+  <div>
+    Author: <%= review.author.username %><br>
+    <%= review.body %><br>
+    Rating: <%= review.rating %>
+  </div>
+  <% if(review.author.equals(currentUser._id)) { %>
     <div>
-        Author: <%= review.author.username %><br>
-        <%= review.body %><br>
-        Rating: <%= review.rating %>
-    </div>
-    <div>
-        <button class="toggle-edit-form">Edit</button>
-        <!-- Edit review -->
-        <form action="/posts/<%= post._id %>/reviews/<%= review._id %>?_method=PUT" method="POST" class="edit-review-form">
-            <textarea name="review[body]" required cols="30"><%= review.body %></textarea>
-            <input type="number" min="1" required max="5" step="1" name="review[rating]" value="<%= review.rating %>">
+      <button class="toggle-edit-form">Edit</button>
+      <!-- Edit review -->
+      <form action="/posts/<%= post._id %>/reviews/<%= review._id %>?_method=PUT" method="POST" class="edit-review-form">
+        <textarea name="review[body]" required cols="30"><%= review.body %></textarea>
+        <input type="number" min="1" required max="5" step="1" name="review[rating]" value="<%= review.rating %>">
 
-            <input type="submit" value="Update">
-        </form>
+        <input type="submit" value="Update">
+      </form>
     </div>
-    <hr>
+  <% } %>
+  <hr>
 <% }); %>
